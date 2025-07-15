@@ -1015,5 +1015,12 @@ require('lazy').setup({
   },
 })
 
+require('nvim-treesitter.configs').setup {
+  highlight = {
+    enable = true,
+    disable = { 'latex' },
+  },
+}
+vim.g.vimtex_view_method = 'zathura'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
