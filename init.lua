@@ -1,4 +1,4 @@
---[[
+--[[sdf
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -884,7 +884,7 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'folke/zellner.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
       ---@diagnostic disable-next-line: missing-fields
@@ -1015,12 +1015,20 @@ require('lazy').setup({
   },
 })
 
-require('nvim-treesitter.configs').setup {
-  highlight = {
-    enable = true,
-    disable = { 'latex' },
-  },
-}
 vim.g.vimtex_view_method = 'zathura'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- c++ debug config
+vim.cmd 'packadd termdebug'
+
+vim.g.termdebug_wide = 1
+
+vim.keymap.set('n', '<leader>dd', ':Termdebug<CR>', { desc = 'Start Termdebug' })
+vim.keymap.set('n', '<leader>db', ':Break<CR>', { desc = 'Set Breakpoint' })
+vim.keymap.set('n', '<leader>dB', ':Clear<CR>', { desc = 'Clear Breakpoint' })
+vim.keymap.set('n', '<leader>dr', ':Run<CR>', { desc = 'Run Program' })
+vim.keymap.set('n', '<leader>dc', ':Continue<CR>', { desc = 'Continue Execution' })
+vim.keymap.set('n', '<leader>ds', ':Step<CR>', { desc = 'Step Into' })
+vim.keymap.set('n', '<leader>do', ':Over<CR>', { desc = 'Step Over' })
+vim.keymap.set('n', '<leader>df', ':Finish<CR>', { desc = 'Finish Function' })
