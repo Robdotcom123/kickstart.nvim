@@ -427,6 +427,8 @@ local function file_type()
     markdown = "[MD]",
     vim = "[VIM]",
     sh = "[SH]",
+    cpp = "[C++]",
+    tex = "[LaTeX]",
   }
 
   if ft == "" then
@@ -440,9 +442,13 @@ end
 local function lsp_status()
   local clients = vim.lsp.get_clients({ bufnr = 0 })
   if #clients > 0 then
-    return "  LSP "
+    test = "LSPs: "
+    for client in clients do
+      test = test + client.name + " "
+    end
+    return test
   end
-  return ""
+  return "  NoLSP"
 end
 
 -- Word count for text files
@@ -489,15 +495,36 @@ local function mode_icon()
   return modes[mode] or "  " .. mode:upper()
 end
 
+-- update Statusline color for different modes
+local function update_mode_colors()
+  local current_mode = vim.api.nvim_get_mode().mode
+  local mode_color = "%#StatusLineAccent#"
+  if current_mode == "n" then
+      mode_color = "%#StatuslineAccent#"
+  elseif current_mode == "i" or current_mode == "ic" then
+      mode_color = "%#StatuslineInsertAccent#"
+  elseif current_mode == "v" or current_mode == "V" or current_mode == "" then
+      mode_color = "%#StatuslineVisualAccent#"
+  elseif current_mode == "R" then
+      mode_color = "%#StatuslineReplaceAccent#"
+  elseif current_mode == "c" then
+      mode_color = "%#StatuslineCmdLineAccent#"
+  elseif current_mode == "t" then
+      mode_color = "%#StatuslineTerminalAccent#"
+  end
+  return mode_color
+end
+
 _G.mode_icon = mode_icon
 _G.git_branch = git_branch
 _G.file_type = file_type
 _G.file_size = file_size
 _G.lsp_status = lsp_status
+_G.update_mode_colors = update_mode_colors
 
-vim.cmd([[
-  highlight StatusLineBold gui=bold cterm=bold
-]])
+--vim.cmd([[
+--  highlight StatusLineBold gui=bold cterm=bold
+--]])
 
 -- Function to change statusline based on window focus
 local function setup_dynamic_statusline()
@@ -506,6 +533,7 @@ local function setup_dynamic_statusline()
     vim.opt_local.statusline = table.concat {
       "  ",
       "%#StatusLineBold#",
+      update_mode_colors(),
       "%{v:lua.mode_icon()}",
       "%#StatusLine#",
       " │ %f %h%m%r",
@@ -583,3 +611,25 @@ local function setup_python_lsp()
     }
   })
 end
+
+-- lua lsp
+vim.lsp.config['luals'] = {
+  -- Command and arguments to start the server.
+  cmd = { 'lua-language-server' },
+  -- Filetypes to automatically attach to.
+  filetypes = { 'lua' },
+  -- Sets the "workspace" to the directory where any of these files is found.
+  -- Files that share a root directory will reuse the LSP server connection.
+  -- Nested lists indicate equal priority, see |vim.lsp.Config|.
+  root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
+  -- Specific settings to send to the server. The schema is server-defined.
+  -- Example: https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+      }
+    }
+  }
+}
+vim.lsp.enable('luals')
