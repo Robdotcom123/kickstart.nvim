@@ -58,7 +58,7 @@ local function lsp_names()
   end
   local names = {}
   for _, client in pairs(clients) do
-    table.instert(names, client.name)
+    table.insert(names, client.name)
   end
   return "[" .. table.concat(names, ", ") .. "]"
 end
@@ -105,7 +105,7 @@ local function mode_icon()
     ["!"] = "SHELL",
     t = "TERMINAL"
   }
-  return modes[mode] or "  " .. mode:upper()
+  return modes[mode] or ("  " .. mode:upper())
 end
 
 -- update Statusline color for different modes
@@ -127,6 +127,30 @@ local function update_mode_colors()
   end
   return mode_color
 end
+
+
+vim.api.nvim_set_hl(0, "StatusLineNormal", { fg = "#ffffff", bg = "#005f87" })
+vim.api.nvim_set_hl(0, "StatusLineInsert", { fg = "#ffffff", bg = "#5f0000" })
+vim.api.nvim_set_hl(0, "StatusLineVisual", { fg = "#000000", bg = "#ffd700" })
+vim.api.nvim_set_hl(0, "StatusLineTerminal", { fg = "#000000", bg = "#EB5800" })
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+  callback = function()
+    local mode = vim.fn.mode()
+    if mode == "n" then
+      vim.api.nvim_set_hl(0, "StatusLine", { link = "StatusLineNormal" })
+    elseif mode == "i" then
+      vim.api.nvim_set_hl(0, "StatusLine", { link = "StatusLineInsert" })
+    elseif mode == "v" or mode == "V" or mode == "\22" then -- \22 = <C-v>
+      vim.api.nvim_set_hl(0, "StatusLine", { link = "StatusLineVisual" })
+    elseif mode == "t" then
+      vim.api.nvim_set_hl(0, "StatusLine", { link = "StatusLineTerminal" })
+    else
+      vim.api.nvim_set_hl(0, "StatusLine", { link = "StatusLineNormal" })
+    end
+  end,
+})
+
 
 _G.mode_icon = mode_icon
 _G.git_branch = git_branch

@@ -1,3 +1,6 @@
+-- plugins laden
+require("plugins")
+
 ---- theme & transparency
 vim.cmd.colorscheme("unokai")
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
@@ -27,3 +30,12 @@ require("statusline")
 
 -- lsp_config
 require("lsp")
+
+-- treesitter config
+require("treesitter_config")
+
+-- keymap floating window
+require("keymaps_float")
+
+-- Debugger Attach
+require("debugging")

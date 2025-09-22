@@ -10,6 +10,28 @@ local function find_root(patterns)
   return root and vim.fn.fnamemodify(root, ':h') or path
 end
 
+-- Strg Space autocomplete 
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local bufnr = args.buf
+    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.bo[bufnr].completeopt = "menuone,noselect"
+
+    -- Nützliche LSP-Mappings
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Open floating hover window" })
+    vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { buffer = bufnr, desc = "LSP rename" })
+    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "LSP Code action" })
+  end,
+})
+
+vim.keymap.set("i", "<C-Space>", "<C-x><C-o>", { desc = "Autocomplete Vorschlag auf Strg+Space" })
+
+
+
+-- ==============================================
+-- Language Connections
+-- ==============================================
+
 -- Shell LSP setup
 local function setup_shell_lsp()
   vim.lsp.start({
@@ -76,20 +98,8 @@ vim.lsp.enable('luals')
 
 -- Autocommands & Keymaps
 --
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local bufnr = args.buf
-    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
-    local opts = { buffer = bufnr }
-
-    -- Nützliche LSP-Mappings
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Open floating hover window" })
-    vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { buffer = bufnr, desc = "LSP rename" })
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "LSP Code action" })
-  end,
-})
-
+-- Diagnostics
 vim.keymap.set("n", "<leader>de", vim.diagnostic.open_float, { desc = "Open floating Diagnostics window and focus it" })
 vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, { desc = "Goto previous Dagnostics entry" })
 vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, { desc = "Goto next Diagnostics entry" })
@@ -110,3 +120,43 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     end
   end,
 })
+
+-- ======================
+-- C++
+-- ======================
+
+vim.lsp.config("clangd", {
+  cmd = { "clangd" },
+  filetypes = { "c", "cpp", "objc", "objcpp" },
+  root_markers = { ".git", "compile_commands.json", "compile_flags.txt" },
+  init_options = {},
+})
+vim.lsp.enable("clangd")
+
+-- =====================
+-- Clojure 
+-- =====================
+
+vim.lsp.config("clojure_lsp", {
+  cmd = { "clojure_lsp" },
+  filetypes = { "clojure", "edn", "clj" },
+  root_markers = { ".git" },
+})
+vim.lsp.enable("clojure_lsp")
+
+-- =====================
+-- LaTex & BibTex
+-- =====================
+
+vim.lsp.config("texlab", {
+  cmd = { "texlab" },
+  filetypes = { "tex", "bib" },
+  root_markers = { ".git", "main.tex" },
+})
+vim.lsp.enable("texlab")
+
+
+
+
+
+
