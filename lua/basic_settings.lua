@@ -1,19 +1,22 @@
--- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
--- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
 
 -- Make line numbers default
 vim.o.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
 vim.o.relativenumber = true
-
--- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
+vim.o.cursorline = true
+vim.o.wrap = false
+vim.o.scrolloff = 10
+vim.o.sidescrolloff = 8
+
+-- Indentation
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.expandtab = true
+vim.o.smartindent = true
+vim.o.autoindent = true
 
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
@@ -35,17 +38,42 @@ vim.o.undofile = true
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.hlsearch = false
+vim.o.incsearch = true
 
--- Keep signcolumn on by default
-vim.o.signcolumn = 'yes'
+-- Visual settings
+vim.o.termguicolors = true
+vim.o.signcolumn = 'yes' -- Keep signcolumn on by default
+vim.o.colorcolumn = '100'
+vim.o.showmatch = true
+vim.o.matchtime = 2
+vim.o.cmdheight = 1
 
--- Decrease update time
-vim.o.updatetime = 250
 
--- Decrease mapped sequence wait time
-vim.o.timeoutlen = 300
+-- File handling
+vim.o.backup = false
+vim.o.writebackup = false
+vim.o.swapfile = false
+vim.o.undofile = true
+vim.o.undodir = vim.fn.expand("~/.vim/undodir")
+vim.o.updatetime = 300
+vim.o.timeoutlen = 1500
+vim.o.ttimeoutlen = 0
+vim.o.autoread = true
+vim.o.autowrite = false
 
--- Configure how new splits should be opened
+
+-- Behaviour settings
+vim.o.hidden = true
+vim.o.errorbells = false
+vim.o.backspace = "indent,eol,start"
+vim.o.autochdir = false
+vim.opt.path:append("**")
+vim.o.selection = "exclusive"
+vim.o.modifiable = true
+vim.o.encoding = "UTF-8"
+
+-- split behaviour
 vim.o.splitright = true
 vim.o.splitbelow = true
 
@@ -64,10 +92,8 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.o.inccommand = 'split'
 
 -- Show which line your cursor is on
-vim.o.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.o.scrolloff = 10
 
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
