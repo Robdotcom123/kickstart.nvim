@@ -15,6 +15,9 @@ require('lazy').setup({
   'Olical/conjure',
   'lervag/vimtex',
   'devsjc/vim-jb',
+  'tpope/vim-dispatch',
+  'radenling/vim-dispatch-neovim',
+  'clojure-vim/vim-jack-in',
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -440,6 +443,7 @@ require('lazy').setup({
         clangd = {},
         clojure_lsp = {},
         texlab = {},
+        jdtls = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
