@@ -52,6 +52,16 @@ require('lazy').setup({
       },
     },
   },
+  -- install with yarn or npm
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && yarn install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -444,6 +454,7 @@ require('lazy').setup({
         clojure_lsp = {},
         texlab = {},
         jdtls = {},
+        bashls = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
