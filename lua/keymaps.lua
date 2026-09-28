@@ -57,6 +57,11 @@ vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
 vim.keymap.set("n", "<leader>bq", ":bdelete<CR>", { desc = "Close current buffer" })
 
+-- Tab navigation
+vim.keymap.set("n", "<leader>tn", ":tabnext<CR>", { desc = "Next Tab" })
+vim.keymap.set("n", "<leader>tp", ":tabprevious<CR>", { desc = "Previous Tab" })
+vim.keymap.set("n", "<leader>tq", ":tabclose<CR>", { desc = "Close current Tab" })
+vim.keymap.set("n", "<leader>tc", ":tabnew<CR>", { desc = "Create New Tab" })
 
 -- Splitting & Rezising
 vim.keymap.set("n", "<leader>sv", ":vsplit<CR>", { desc = "Split window vertically" })
